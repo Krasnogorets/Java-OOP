@@ -1,6 +1,4 @@
-import java.io.IOException;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 public class Main {
@@ -17,7 +15,7 @@ public class Main {
     }
     public static Set<Human> people = new HashSet<Human>();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         Human people1 = new Human("01,01,1686","александр","пушкин","","male");
         Human people2 = new Human("01/01/1703","евдокия","головина","","female");
         Human people3 = new Human("01.01/1723","лев","пушкин","александрович","male");
