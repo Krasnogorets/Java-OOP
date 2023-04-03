@@ -1,25 +1,29 @@
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Human {
+
+    private String birthDay;
     private int birth_date;
     private int birth_month;
     private int birth_year;
     private Human father;
     private Human mother;
+    private String sex;
+    private Human wifeOrHusband;
     private Set<Human> children;
     private String firstName;
     private String secondName;
     private String patronymic;
 
 
-    public Human(String birthDay, String firstName, String secondName, String patronymic) {
+    public Human(String birthDay, String firstName, String secondName, String patronymic, String sex) {
         convertDateFromStringToInt(birthDay);
+        this.birthDay = getBirthDay();
         this.firstName = firstName.toUpperCase();
         this.secondName = secondName.toUpperCase();
         this.patronymic = patronymic.toUpperCase();
+        this.sex = sex.toLowerCase();
     }
     private void convertDateFromStringToInt(String input){
         String[] tempString = input.split("[//.,]");
@@ -39,6 +43,14 @@ public class Human {
       return year-birth_year+1900;
     }
 
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
     public void setFather(Human father) {
         this.father = father;
     }
@@ -55,23 +67,61 @@ public class Human {
         return mother;
     }
 
-    public void setChildren(Human child) throws IOException {
-
+    public void setChildren(Human child)  {
         if (children == null){
-            Set<Human> children = new HashSet<>();
+            this.children= new HashSet<>();
             this.children.add(child);
         }
-        else{
+        else {
             this.children.add(child);
         }
+        if (this.sex =="male"){
+            setFather(child);
+        }
+        else {
+            setMother(child);
+        }
+
     }
 
     public Set<Human> getChildren() {
         return children;
     }
 
+
+    public void setWifeOrHusband(Human wifeOrHusband) {
+        this.wifeOrHusband = wifeOrHusband;
+    }
+
+    public Human getWifeOrHusband() {
+        return wifeOrHusband;
+    }
+
+
     @Override
     public String toString() {
-        return secondName+ " " + firstName+" "+ patronymic +", возраст :"+ getAge() +" лет";
+        return secondName+ " " + firstName+" "
+                + patronymic +", "
+                + "год рождения: " + this.birth_year+"\n, "
+                + "пол: " + this.sex +"\n, "
+                + "дети: " + this.children +" "
+                ;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Human human =(Human) o;
+        return Objects.equals(firstName, human.firstName)
+                && Objects.equals(secondName, human.secondName)
+                && Objects.equals(patronymic, human.patronymic) && Objects.equals(birthDay, human.birthDay);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName,secondName,patronymic,birthDay);
     }
 }
